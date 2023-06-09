@@ -1,5 +1,4 @@
 lint
 black
-pytest
-pytest-cov
 click
+sqlalchemy
