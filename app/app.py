@@ -1,4 +1,4 @@
-from flask import Flask, render_template,request,redirect,url_for,flash
+from flask import Flask, render_template,request,redirect,url_for,flash, jsonify
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -64,6 +64,13 @@ def deleteMenuItem(restaurant_id, menu_id):
     else:
         return render_template('deletemenuitem.html',item=itemToDelete)
 
+#making an Api Endpoint (Get Reqeust)
+@app.route("/restaurants/<int:restaurant_id>/menu/JSON", methods=['GET',"POST"])
+def restaurantMenuJson(restaurant_id):
+   
+    restaurant = session.query(Restaurant).filter_by(id = restaurant_id).one()
+    items =  session.query(MenuItem).filter_by(restaurant_id = restaurant_id)
+    return jsonify(MenuItems=[i.serialize for i in items])
 if __name__ == "__main__":
     
     app.debug(True)
