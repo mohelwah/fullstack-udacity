@@ -68,9 +68,18 @@ def deleteMenuItem(restaurant_id, menu_id):
 @app.route("/restaurants/<int:restaurant_id>/menu/JSON", methods=['GET',"POST"])
 def restaurantMenuJson(restaurant_id):
    
-    restaurant = session.query(Restaurant).filter_by(id = restaurant_id).one()
+    #restaurant = session.query(Restaurant).filter_by(id = restaurant_id).one()
     items =  session.query(MenuItem).filter_by(restaurant_id = restaurant_id)
     return jsonify(MenuItems=[i.serialize for i in items])
+
+@app.route("/restaurants/<int:restaurant_id>/menu/<int:menu_id>/JSON", methods=['GET',"POST"])
+def menuItemJson(restaurant_id,menu_id):
+   
+    #restaurant = session.query(Restaurant).filter_by(id = restaurant_id).one()
+    menuItem =  session.query(MenuItem).filter_by(id = menu_id).one()
+    return jsonify(MenuItem = menuItem.serialize)
+
+
 if __name__ == "__main__":
     
     app.debug(True)
