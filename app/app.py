@@ -1,10 +1,10 @@
-from flask import Flask, render_template,request,redirect,url_for
+from flask import Flask, render_template,request,redirect,url_for,flash
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Restaurant, MenuItem
 app = Flask(__name__)
-
+app.secret_key="HiSecretekey"
 engine = create_engine("sqlite:///restaurantmenu.db")
 
 Base.metadata.bind = engine
@@ -30,6 +30,7 @@ def newMenuItem(restaurant_id):
                            price=request.form['price'])
         session.add(newItem)
         session.commit()
+        flash("new menu item created!!")
         return redirect(url_for('restaurantMenu', restaurant_id=restaurant_id))
     else:
         return render_template('newmenuitem.html', restaurant_id=restaurant_id)
@@ -40,9 +41,11 @@ def newMenuItem(restaurant_id):
 def editMenuItem(restaurant_id, menu_id):
     if request.method == 'POST':
         menuItem = session.query(MenuItem).filter_by(id = menu_id).one()
-        menuItem.price = request.form['price']
+        if request.form['price']:
+            menuItem.price = request.form['price']
         session.add(menuItem)
         session.commit()
+        flash(" menu item Edited!!")
         return redirect(url_for('restaurantMenu', restaurant_id=restaurant_id))
     else:
         return render_template('editMenuItem.html', restaurant_id=restaurant_id,menu_id=menu_id)
@@ -51,15 +54,18 @@ def editMenuItem(restaurant_id, menu_id):
 
 @app.route("/restaurants/<int:restaurant_id>/<int:menu_id>/delete/", methods=['GET',"POST"])
 def deleteMenuItem(restaurant_id, menu_id):
+    itemToDelete = session.query(MenuItem).filter_by(id = menu_id).one()
     if request.method == 'POST':
-        menuItem = session.query(MenuItem).filter_by(id = menu_id).one()
-        session.delete(menuItem)
+        
+        session.delete(itemToDelete)
         session.commit()
+        flash("menu item deleted!!")
         return redirect(url_for('restaurantMenu', restaurant_id=restaurant_id))
     else:
-        return render_template('deletemenuitem.html', restaurant_id=restaurant_id,menu_id=menu_id)
+        return render_template('deletemenuitem.html',item=itemToDelete)
 
 if __name__ == "__main__":
+    
     app.debug(True)
     app.run(host="127.0.0.1", port=5000)
     
