@@ -8,12 +8,11 @@
 </head>
 <body>
     <h1>New Menu Item</h1>
-    <form action="{{url_for('newMenuItem',restaurant_id=restaurant_id )}}", method="POST">
-        <p>Name</p>
-        <input type="text" size="30" name="name">
-        <input type="text" size="30" name="description">
+    <form action="{{url_for('editMenuItem',restaurant_id=restaurant_id,menu_id=menu_id )}}", method="POST">
+        <p>Price</p>
         <input type="text" size="30" name="price">
-        <input type="submit" value="Create">
+
+        <input type="submit" value="Change">
 
     </form>
     
