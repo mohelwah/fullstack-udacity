@@ -8,8 +8,8 @@ this is scaffold template for python
     - virtial enviroment: python -m venv ~/.scrape
     - activate venv envi: source ~/.scrape/bin/activate
  - Windows system:
-    - virtial enviroment: python -m venv c:\venv\scrapy
-    - activate venv envi:   C:\venv\scrapy\Scripts\activate.ps1
+    - virtial enviroment: python -m venv c:\venv\fullstack
+    - activate venv envi:   C:\venv\fullstack\Scripts\activate.ps1
  - hello.py file
  - test_hello.py file 
  - to check the python version:
